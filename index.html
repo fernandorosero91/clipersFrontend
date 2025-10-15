@@ -1,13 +1,182 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>frontend</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clippers - Tu plataforma de reclutamiento</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <h1>Clippers</h1>
+                </div>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" data-page="home">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-page="jobs">Ofertas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-page="candidates">Candidatos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-page="companies">Empresas</a>
+                    </li>
+                    <li class="nav-item" id="auth-item">
+                        <a href="#" class="nav-link" id="auth-link" data-page="login">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main id="app-container">
+        <!-- Página de Inicio -->
+        <section id="home-page" class="page active">
+            <div class="hero">
+                <div class="hero-content">
+                    <h2>Encuentra el talento perfecto</h2>
+                    <p>Conectamos empresas con los mejores candidatos del mercado</p>
+                    <button class="cta-button">Comenzar</button>
+                </div>
+            </div>
+
+            <section class="features">
+                <div class="container">
+                    <div class="feature-card">
+                        <h3>Búsqueda Inteligente</h3>
+                        <p>Utilizamos IA para encontrar el candidato ideal para tu empresa</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Perfiles Verificados</h3>
+                        <p>Todos los perfiles son verificados para garantizar calidad</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Seguro y Confiable</h3>
+                        <p>Tus datos están protegidos con las mejores prácticas de seguridad</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="api-test">
+                <div class="container">
+                    <h3>Conexión con Backend</h3>
+                    <div id="api-status" class="api-status">
+                        <p>Estado: <span id="status-text">Verificando conexión...</span></p>
+                        <button id="test-api-btn">Probar API</button>
+                        <p class="api-note">El backend debe estar ejecutándose en http://localhost:8080</p>
+                    </div>
+                    <div id="api-result" class="api-result" style="display: none;">
+                        <h4>Resultado:</h4>
+                        <pre id="result-content"></pre>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Página de Ofertas -->
+        <section id="jobs-page" class="page" style="display: none;">
+            <div class="container">
+                <h2>Ofertas de Trabajo</h2>
+                <div class="jobs-grid" id="jobs-container">
+                    <!-- Las ofertas se cargarán dinámicamente -->
+                </div>
+                <div class="loading" id="jobs-loading">Cargando ofertas...</div>
+            </div>
+        </section>
+
+        <!-- Página de Candidatos -->
+        <section id="candidates-page" class="page" style="display: none;">
+            <div class="container">
+                <h2>Candidatos Destacados</h2>
+                <div class="candidates-grid" id="candidates-container">
+                    <!-- Los candidatos se cargarán dinámicamente -->
+                </div>
+                <div class="loading" id="candidates-loading">Cargando candidatos...</div>
+            </div>
+        </section>
+
+        <!-- Página de Empresas -->
+        <section id="companies-page" class="page" style="display: none;">
+            <div class="container">
+                <h2>Empresas Asociadas</h2>
+                <div class="companies-grid" id="companies-container">
+                    <!-- Las empresas se cargarán dinámicamente -->
+                </div>
+                <div class="loading" id="companies-loading">Cargando empresas...</div>
+            </div>
+        </section>
+
+        <!-- Página de Login -->
+        <section id="login-page" class="page" style="display: none;">
+            <div class="container">
+                <div class="auth-container">
+                    <div class="auth-tabs">
+                        <button class="auth-tab active" data-tab="login">Iniciar Sesión</button>
+                        <button class="auth-tab" data-tab="register">Registrarse</button>
+                    </div>
+                    
+                    <!-- Formulario de Login -->
+                    <div id="login-form-container" class="auth-form-container">
+                        <h2>Iniciar Sesión</h2>
+                        <form id="login-form">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Contraseña</label>
+                                <input type="password" id="password" name="password" required>
+                            </div>
+                            <button type="submit" class="btn-primary">Iniciar Sesión</button>
+                        </form>
+                        <div id="login-message" class="message"></div>
+                    </div>
+                    
+                    <!-- Formulario de Registro -->
+                    <div id="register-form-container" class="auth-form-container" style="display: none;">
+                        <h2>Crear Cuenta</h2>
+                        <form id="register-form">
+                            <div class="form-group">
+                                <label for="reg-name">Nombre Completo</label>
+                                <input type="text" id="reg-name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-email">Email</label>
+                                <input type="email" id="reg-email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-password">Contraseña</label>
+                                <input type="password" id="reg-password" name="password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-role">Rol</label>
+                                <select id="reg-role" name="role" required>
+                                    <option value="">Selecciona un rol</option>
+                                    <option value="CANDIDATE">Candidato</option>
+                                    <option value="COMPANY">Empresa</option>
+                                    <option value="ADMIN">Administrador</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn-primary">Registrarse</button>
+                        </form>
+                        <div id="register-message" class="message"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Clippers. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
 </html>
